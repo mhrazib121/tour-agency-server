@@ -28,11 +28,12 @@ async function run() {
             res.send(packages)
         })
         // single api 
-        app.get('/services/:serviceId', async(req, res)=>{
+        app.get('/services/:id', async(req, res)=>{
             const id = req.params.id;
+            console.log('getin single', id)
             const query = {_id: ObjectId(id)};
             const package = await packageCollection.findOne(query);
-            res.json(package)
+            res.json(package);
         })
 
         // post api
@@ -40,6 +41,17 @@ async function run() {
             const package = req.body;
             const result = await packageCollection.insertOne(package);
             res.json(result);
+
+        })
+
+        // Manage Api 
+
+        app.delete('serrvices/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+            const package = await packageCollection.deleteOne(query);
+            res.json(package)
+            console.log(package);
 
         })
     }
