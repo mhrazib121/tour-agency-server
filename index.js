@@ -68,6 +68,20 @@ async function run() {
             console.log(result);
 
         })
+
+        // Update Booking Status 
+        app.put('/bookings/:id', async(req, res)=> {
+            const id = req.params.id;
+            const updateBookingStatus = req.body;
+            const filter = {_id: ObjectId(id)};
+            const updateDoc = {
+                $set:{
+                    status: updateBookingStatus.status
+                }
+            };
+            const result = await bookingCollection.updateOne(filter, updateDoc,option);
+            res.json(result);
+        })
     }
     finally {
 
