@@ -74,12 +74,13 @@ async function run() {
             const id = req.params.id;
             const updateBookingStatus = req.body;
             const filter = {_id: ObjectId(id)};
+            const options = {upsert: true};
             const updateDoc = {
                 $set:{
                     status: updateBookingStatus.status
                 }
             };
-            const result = await bookingCollection.updateOne(filter, updateDoc,option);
+            const result = await bookingCollection.updateOne(filter, updateDoc, options);
             res.json(result);
         })
     }
