@@ -20,6 +20,14 @@ async function run() {
         console.log('connected');
         const database = client.db("tourPackage");
         const packageCollection = database.collection("packages");
+        const bookingCollection = database.collection("bookings");
+
+        // post services api
+        app.post('/services', async (req, res) => {
+            const package = req.body;
+            const result = await packageCollection.insertOne(package);
+            res.json(result);
+        })
 
         // get api 
         app.get('/services', async(req, res)=>{
@@ -35,23 +43,29 @@ async function run() {
             const package = await packageCollection.findOne(query);
             res.json(package);
         })
-
-        // post api
-        app.post('/services', async (req, res) => {
-            const package = req.body;
-            const result = await packageCollection.insertOne(package);
+        // Package Booking Post
+        app.post('/bookings', async(req, res) => {
+            const packageBooking = req.body;
+            const result = await bookingCollection.insertOne(packageBooking);
             res.json(result);
-
         })
 
-        // Manage Api 
+        // Package Booking get 
+        app.get('/bookings', async(req, res) => {
+            const cursor = bookingCollection.find({});
+            const bookings = await cursor.toArray();
+            res.send(bookings);
+        })
+        
 
-        app.delete('serrvices/:id', async(req, res)=>{
+        // booking delete 
+
+        app.delete('/bookings/:id', async(req, res)=>{
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
-            const package = await packageCollection.deleteOne(query);
-            res.json(package)
-            console.log(package);
+            const result = await bookingCollection.deleteOne(query);
+            res.json(result)
+            console.log(result);
 
         })
     }
