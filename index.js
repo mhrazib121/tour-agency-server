@@ -33,7 +33,7 @@ async function run() {
         app.get('/services', async(req, res)=>{
             const cursor = packageCollection.find({});
             const packages = await cursor.toArray();
-            res.send(packages)
+            res.send(packages);
         })
         // single api 
         app.get('/services/:id', async(req, res)=>{
